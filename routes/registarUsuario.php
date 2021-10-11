@@ -6,9 +6,8 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 
 header("Access-Control-Allow-Headers: X-Requested-With");
-//$endPoint = new UsuarioController();
-//echo "entra Aqui";
-$model = json_decode($_POST['usuario']);
+$endPoint = new UsuarioController();
+$json_data = file_get_contents('php://input');
+$model = json_decode($json_data);
 
-echo json_encode($model);
-//$endPoint->registrarUsuario($model);
+$endPoint->registrarUsuario($model);
