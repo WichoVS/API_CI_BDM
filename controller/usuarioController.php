@@ -4,8 +4,9 @@ class UsuarioController
     private $conectar;
     private $db;
 
-    public function __construct($dir)
+    public function __construct($dir, $model)
     {
+        require_once "$model";
         require_once "$dir";
         $this->conectar = new Conectar();
         $this->db = $this->conectar->conexion();
@@ -25,16 +26,19 @@ class UsuarioController
 
     public function loginUsuario($pCorreo, $pContra)
     {
-        //$sql = 'call loginUsuario(\'' . $pCorreo . '\', \'' . $pContra . '\')';
-        $sql = "SELECT * FROM Usuario";
+        $userR = new Usuario();
+        $id = 0;
+        $sql = 'call loginUsuario(\'' . $pCorreo . '\', \'' . $pContra . '\')';
 
-        echo $sql;
         $query = $this->db->query($sql);
-
-        if ($query) {
-            echo json_encode($query);
+        if ($query != null) {
+            $id = $query->fetch_assoc();
         } else {
-            echo json_encode($this->db->error);
+            echo json_decode($this->db->error);
         }
+        $idNo = json_decode($id['IdUsuario']);
+        $userR->idUsuario = $idNo;
+
+        return $userR;
     }
 }
