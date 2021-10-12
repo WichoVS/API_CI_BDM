@@ -8,7 +8,7 @@ class Conectar
   {
     $this->servername = "localhost";
     $this->username = "root";
-    $this->password = "root";
+    $this->password = "Bmgbcfup123";
     $this->dbname = "cursosapi";
   }
 

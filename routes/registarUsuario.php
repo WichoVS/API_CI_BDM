@@ -25,25 +25,4 @@ $genero = $data->genero;
 $foto = $data->foto;
 $escuela = $data->escuela;
 
-
-//echo json_encode(array("data" => $nombre));
-
-//$data = json_decode($json_data, true);
-//$data["nombre"];
-
-// $nombre = $_POST["nombre"]; 
-// $aPaterno = $data['aPaterno'];
-// $aMaterno = $data['aMaterno'];
-// $correo = $data['correo'];
-// $contra = $data['contra'];
-// $fNacim = $data['fNacim'];
-// $genero = $data['genero'];
-// $foto = $data['foto'];
-// $escuela = $data['escuela'];
-
-//echo $nombre;
-//$model = new Usuario($nombre, $aPaterno, $aMaterno, $correo, $contra, $fNacim, $genero, $foto, $escuela);
-
-
-
 $endPoint->registrarUsuario($nombre, $aPaterno, $aMaterno, $correo, $contra, $fNacim, $genero, $foto, $escuela);
