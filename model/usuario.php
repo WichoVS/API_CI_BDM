@@ -14,8 +14,16 @@ class Usuario
     private $conectar;
     private $db;
 
-    public function _constructor()
+    public function __construct($pNombre, $pAPaterno, $pAMaterno, $pCorreo, $pContra, $pFNacim, $pGenero, $pFoto, $pEscuela)
     {
+        $this->nombre = $pNombre;
+        $this->aPaterno = $pAPaterno;
+        $this->aMaterno = $pAMaterno;
+        $this->correo = $pCorreo;
+        $this->contra = $pContra;
+        $this->fNacim = $pFNacim;
+        $this->genero = $pGenero;
+        $this->foto = $pFoto;
+        $this->escuela = $pEscuela;
     }
-
 }
