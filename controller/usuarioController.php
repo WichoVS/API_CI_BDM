@@ -4,9 +4,9 @@ class UsuarioController
     private $conectar;
     private $db;
 
-    public function __construct()
+    public function __construct($dir)
     {
-        require_once '../config/db.php';
+        require_once "$dir";
         $this->conectar = new Conectar();
         $this->db = $this->conectar->conexion();
     }
@@ -34,14 +34,16 @@ class UsuarioController
 
     public function loginUsuario($pCorreo, $pContra)
     {
-        $sql = "call loginUsuario(${pCorreo},${pContra})";
+        //$sql = 'call loginUsuario(\'' . $pCorreo . '\', \'' . $pContra . '\')';
+        $sql = "SELECT * FROM Usuario";
 
+        echo $sql;
         $query = $this->db->query($sql);
 
         if ($query) {
             echo json_encode($query);
         } else {
-            echo json_encode(FALSE);
+            echo json_encode($this->db->error);
         }
     }
 }
