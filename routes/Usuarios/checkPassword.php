@@ -9,18 +9,13 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header("Access-Control-Allow-Headers: *");
 }
+
 $endPoint = new UsuarioController("../../config/db.php", "../../model/usuario.php");
 $json_data = file_get_contents('php://input');
 
 $data = json_decode($json_data);
 
-$id = $data->idUsuario;
-$nombre = $data->nombre;
-$aPaterno = $data->aPaterno;
-$aMaterno = $data->aMaterno;
-$correo = $data->correo;
-$contra = $data->contra;
-$genero = $data->genero;
-$foto = $data->foto;
+$id = $data->id;
+$Contra = $data->contra;
 
-echo json_encode($endPoint->updateUsuario($id, $nombre, $aPaterno, $aMaterno, $correo, $contra, $genero, $foto));
+echo json_encode($endPoint->checkPassword($id, $Contra));

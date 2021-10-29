@@ -15,12 +15,5 @@ $json_data = file_get_contents('php://input');
 $data = json_decode($json_data);
 
 $id = $data->idUsuario;
-$nombre = $data->nombre;
-$aPaterno = $data->aPaterno;
-$aMaterno = $data->aMaterno;
-$correo = $data->correo;
-$contra = $data->contra;
-$genero = $data->genero;
-$foto = $data->foto;
 
-echo json_encode($endPoint->updateUsuario($id, $nombre, $aPaterno, $aMaterno, $correo, $contra, $genero, $foto));
+echo json_encode($endPoint->getUsuario($id));
