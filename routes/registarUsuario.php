@@ -2,14 +2,9 @@
 require '../controller/usuarioController.php';
 require_once '../model/usuario.php';
 // Allow CORS
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Credentials: true');
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-
-// Access-Control headers are received during OPTIONS requests
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    header("Access-Control-Allow-Headers: *");
-}
+header('content-type: application/json; charset=utf-8');
 $endPoint = new UsuarioController("../config/db.php", "../model/usuario.php");
 $json_data = file_get_contents('php://input');
 
