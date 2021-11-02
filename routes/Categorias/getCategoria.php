@@ -11,4 +11,4 @@ $json_data = file_get_contents('php://input');
 
 //$id = $data->idUsuario;
 
-echo json_encode($endPoint->getUsuario());
+echo json_encode($endPoint->getCategoria());

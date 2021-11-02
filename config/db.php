@@ -6,7 +6,7 @@ class Conectar
 
   public function __construct()
   {
-    $this->servername = "localhost";
+    $this->servername = "156.67.74.151";
     $this->username = "u176038041_admin";
     $this->password = "Proyectos2021!";
     $this->dbname = "u176038041_cursosapi";
