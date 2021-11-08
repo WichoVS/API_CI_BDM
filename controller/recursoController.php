@@ -18,7 +18,7 @@ class RecursoController
         $strings = explode(",", $archivoB64);
         $extension = explode(".", $pRecurso->Nombre);
 
-        $nombreArchivo = $pIdPadre . $pRecurso->Nombre . $extension[1];
+        $nombreArchivo = $pIdPadre . $extension[0] . $extension[1];
 
         $sql = "call crearRecurso('$pRecurso->Nombre', '$nombreArchivo', $pIdPadre)";
         $query = $this->db->query($sql);
