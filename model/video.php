@@ -1,15 +1,12 @@
 <?php
-
-class Curso
+class Video
 {
-    public $IdCurso;
-    public $TituloCurso;
-    public $DescrCurso;
-    public $PrecioCompleto;
-    public $ImagenCurso;
-    public $Disponible;
-    public $CreadoPor;
-    public $CreadoEn;
+    public $IdVideo;
+    public $Nombre;
+    public $Descripcion;
+    public $RutaVideo;
+    public $CursoPadre;
+    public $NivelPadre;
 
 
     function __construct($data)

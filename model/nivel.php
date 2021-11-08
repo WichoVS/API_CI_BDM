@@ -1,16 +1,11 @@
 <?php
 
-class Curso
+class Nivel
 {
-    public $IdCurso;
-    public $TituloCurso;
-    public $DescrCurso;
-    public $PrecioCompleto;
-    public $ImagenCurso;
-    public $Disponible;
-    public $CreadoPor;
-    public $CreadoEn;
-
+    public $IdNivel;
+    public $Nombre;
+    public $Costo;
+    public $CursoPadre;
 
     function __construct($data)
     {

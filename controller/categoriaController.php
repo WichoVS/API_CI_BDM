@@ -12,11 +12,11 @@ class CategoriaController
         $this->db = $this->conectar->conexion();
     }
 
-    /*public function registrarUsuario($pNombre, $pAPaterno, $pAMaterno, $pCorreo, $pContra, $pFNacim, $pGenero, $pFoto, $pEscuela)
+    public function registrarCategoria($pCategoria)
     {
-        $userR = new Usuario();
+        $Catego = new Categoria();
         $id = 0;
-        $sql = 'call registrarUsuario(\'' . $pNombre . '\', \'' . $pAPaterno . '\', \'' . $pAMaterno . '\',\'' . $pCorreo . '\',\'' . $pContra . '\',\'' . $pFNacim . '\',\'' . $pGenero . '\',\'' . $pFoto . '\',' . $pEscuela . ')';
+        $sql = 'call registrarCategoria(\'' . $pCategoria . '\')';
         $query = $this->db->query($sql);
         if ($query != null) {
             $id = $query->fetch_assoc();
@@ -24,32 +24,14 @@ class CategoriaController
             return json_encode($this->db->error);
         }
 
-        $idNo = json_decode($id['IdUsuario']);
-        $userR->idUsuario = $idNo;
-
-        return $userR;
-    }*/
-
-    public function registrarCategoria($pCategoria) {
-        $Catego = new Categoria();
-        $id = 0;
-        $sql = 'call registrarCategoria(\'' . $pCategoria . '\')';
-        $query = $this->db->query($sql);
-        if($query != null) {
-            $id = $query->fetch_assoc();
-        }
-        else {
-            return json_encode($this->db->error);
-        }
-
         $idNo = json_decode($id['IdCategoria']);
         $Catego->idCategoria = $idNo;
 
         return $Catego;
-        
     }
 
-    public function getCategoria() {
+    public function getCategoria()
+    {
         $Catego = new Categoria();
         $sql = 'call getCategoria()';
 
@@ -65,5 +47,4 @@ class CategoriaController
 
         return $Catego;
     }
-
 }
