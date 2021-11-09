@@ -22,10 +22,11 @@ class NivelController
         if ($auxQuery) {
             $row = $auxQuery->fetch_assoc();
         } else {
+            echo json_encode($this->db->error);
             return json_decode($this->db->error);
         }
+        $this->db->close();
         $pNivel->IdNivel = json_decode($row['IdNivel']);
-
         return $pNivel;
     }
 }

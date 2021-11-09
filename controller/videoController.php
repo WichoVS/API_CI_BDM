@@ -33,7 +33,7 @@ class VideoController
         } else {
             return json_decode($this->db->error);
         }
-
+        $this->db->close();
         $pVideo->IdVideo = json_decode($row['IdVideo']);
         $pVideo->RutaVideo = $nombreArchivo;
 

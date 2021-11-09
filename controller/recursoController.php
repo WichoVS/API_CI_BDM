@@ -16,9 +16,9 @@ class RecursoController
     {
         $archivoB64 = $pRecurso->RutaArchiv;
         $strings = explode(",", $archivoB64);
-        $extension = explode(".", $pRecurso->Nombre);
 
-        $nombreArchivo = $pIdPadre . $extension[0] . $extension[1];
+
+        $nombreArchivo = $pIdPadre . $pRecurso->Nombre;
 
         $sql = "call crearRecurso('$pRecurso->Nombre', '$nombreArchivo', $pIdPadre)";
         $query = $this->db->query($sql);
@@ -33,8 +33,9 @@ class RecursoController
         } else {
             return json_decode($this->db->error);
         }
+        $this->db->close();
         $pRecurso->RutaArchiv = $nombreArchivo;
         $pRecurso->IdRecurso = json_decode($row['IdRecurso']);
-        return true;
+        return $pRecurso;
     }
 }

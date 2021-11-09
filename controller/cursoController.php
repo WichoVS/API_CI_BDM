@@ -7,15 +7,26 @@ class CursoController
     private $videos;
     private $recursos;
     private $assets;
+    private $dbDir;
+    private $mNivel;
+    private $mVideo;
+    private $mRecurso;
+
 
     public function __construct($dir, $model, $modelNivel, $modelVideo, $modelRecurso, $carpetaAssets)
     {
+        $this->dbDir = $dir;
+        $this->mNivel = $modelNivel;
+        $this->mVideo = $modelVideo;
+        $this->mRecurso = $modelRecurso;
+        require_once $modelNivel;
+        require_once $modelVideo;
+        require_once $modelRecurso;
         $this->assets = $carpetaAssets;
-        $this->niveles = new NivelController("$dir", "$modelNivel");
-        $this->videos = new VideoController("$dir", "$modelVideo");
-        $this->recursos = new RecursoController("$dir", "$modelRecurso");
+        $this->videos = new VideoController($this->dbDir, "$modelVideo");
+        $this->recursos = new RecursoController($this->dbDir, "$modelRecurso");
         require_once "$model";
-        require_once "$dir";
+        require_once "$this->dbDir";
         $this->conectar = new Conectar();
         $this->db = $this->conectar->conexion();
     }
@@ -37,21 +48,25 @@ class CursoController
         }
         $curso->IdCurso = json_decode($row['IdCurso']);
 
-        foreach ($pCurso->Niveles as $value) {
-            $auxNivel = new Nivel($value);
+
+        foreach ($pCurso->Niveles as $nivel) {
+            $auxNivel = new Nivel($nivel);
             $auxIdNivel = $auxNivel->IdNivel;
+            $this->niveles = new NivelController($this->dbDir, $this->mNivel);
             $auxNivel =  $this->niveles->crearNivel($curso->IdCurso, $auxNivel);
 
             foreach ($pCurso->Videos as $video) {
                 $auxVideo = new Video($video);
                 $auxIdVideo = $auxVideo->IdVideo;
                 if ($auxVideo->NivelPadre == $auxIdNivel) {
+                    $this->videos = new VideoController($this->dbDir, $this->mVideo);
                     $auxVideo = $this->videos->crearVideo($curso->IdCurso, $auxNivel->IdNivel, $auxVideo, $this->assets);
 
                     foreach ($pCurso->Archivos as $archivo) {
                         $auxArchivo = new Recurso($archivo);
                         if ($auxArchivo->VideoPadre == $auxIdVideo) {
-                            $this->recursos->crearRecurso($auxVideo->IdVideo, $auxArchivo, $this->assets);
+                            $this->recursos = new RecursoController($this->dbDir, $this->mRecurso);
+                            $auxArchivo = $this->recursos->crearRecurso($auxVideo->IdVideo, $auxArchivo, $this->assets);
                         }
                     }
                 }
