@@ -7,21 +7,25 @@ class CursoController
     private $videos;
     private $recursos;
     private $assets;
+    private $categorias;
     private $dbDir;
     private $mNivel;
     private $mVideo;
     private $mRecurso;
+    private $mCategoria;
 
 
-    public function __construct($dir, $model, $modelNivel, $modelVideo, $modelRecurso, $carpetaAssets)
+    public function __construct($dir, $model, $modelNivel, $modelVideo, $modelRecurso, $modelCategoria, $carpetaAssets)
     {
         $this->dbDir = $dir;
         $this->mNivel = $modelNivel;
         $this->mVideo = $modelVideo;
         $this->mRecurso = $modelRecurso;
+        $this->mCategoria = $modelCategoria;
         require_once $modelNivel;
         require_once $modelVideo;
         require_once $modelRecurso;
+        require_once $modelCategoria;
         $this->assets = $carpetaAssets;
         $this->videos = new VideoController($this->dbDir, "$modelVideo");
         $this->recursos = new RecursoController($this->dbDir, "$modelRecurso");
@@ -48,6 +52,12 @@ class CursoController
         }
         $curso->IdCurso = json_decode($row['IdCurso']);
 
+        foreach ($pCurso->Categorias as $categoria) {
+            $auxCat = new Categoria($categoria);
+            $this->categorias = new CategoriaController($this->dbDir, $this->mCategoria);
+
+            $IdCatCruso = $this->categorias->addCategoriaCurso($auxCat->IdCategoria, $curso->IdCurso, $curso->CreadoPor);
+        }
 
         foreach ($pCurso->Niveles as $nivel) {
             $auxNivel = new Nivel($nivel);

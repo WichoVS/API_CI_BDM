@@ -1,6 +1,5 @@
 <?php
-require '../../controller/categoriaController.php';
-require_once '../../model/categoria.php';
+require_once '../../controller/categoriaController.php';
 // Allow CORS
 header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header("Access-Control-Allow-Origin: *");
@@ -10,4 +9,4 @@ $json_data = file_get_contents('php://input');
 
 $data = json_decode($json_data);
 
-echo json_encode($endPoint->registrarCategoria($data));
+echo json_encode($endPoint->getCategoriaById($data->idCategoria));

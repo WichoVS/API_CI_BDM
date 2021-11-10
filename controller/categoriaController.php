@@ -14,27 +14,43 @@ class CategoriaController
 
     public function registrarCategoria($pCategoria)
     {
-        $Catego = new Categoria();
-        $id = 0;
-        $sql = 'call registrarCategoria(\'' . $pCategoria . '\')';
+        $categoria = new Categoria($pCategoria);
+        $sql = 'call registrarCategoria(\'' . $categoria->Descripcion . '\')';
         $query = $this->db->query($sql);
         if ($query != null) {
             $id = $query->fetch_assoc();
         } else {
             return json_encode($this->db->error);
         }
-
-        $idNo = json_decode($id['IdCategoria']);
-        $Catego->idCategoria = $idNo;
-
-        return $Catego;
+        return json_decode($id['IdCategoria']);
     }
 
     public function getCategoria()
     {
-        $Catego = new Categoria();
+        $categorias = array();
         $sql = 'call getCategoria()';
 
+        $query = $this->db->query($sql);
+        if ($query != null) {
+            while ($row = $query->fetch_assoc()) {
+                $auxCatego = new Categoria(null);
+                $auxCatego->IdCategoria = json_decode($row['IdCategoria']);
+                $auxCatego->Descripcion = $row['Descripcion'];
+                array_push($categorias, $auxCatego);
+            }
+        } else {
+            return json_decode($this->db->error);
+        }
+
+
+        return $categorias;
+    }
+
+
+    public function getCategoriaById($id)
+    {
+        $Catego = new Categoria(null);
+        $sql = "call getCategoriaById($id)";
         $query = $this->db->query($sql);
         if ($query != null) {
             $aux = $query->fetch_assoc();
@@ -42,9 +58,23 @@ class CategoriaController
             return json_decode($this->db->error);
         }
 
-        //$idNo = json_decode($id['IdUsuario']);
-        $Catego = $aux;
+        $Catego->IdCategoria = json_decode($aux['IdCategoria']);
+        $Catego->Descripcion = $aux['Descripcion'];
 
         return $Catego;
+    }
+
+    public function addCategoriaCurso($pCat, $pCurso, $pUser)
+    {
+
+        $sql = "call addCategoriaCurso($pCat, $pCurso, $pUser)";
+        $query = $this->db->query($sql);
+        if ($query != null) {
+            $aux = $query->fetch_assoc();
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return json_decode($aux['IdCatCurso']);
     }
 }
