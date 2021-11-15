@@ -13,22 +13,27 @@ class CursoController
     private $mVideo;
     private $mRecurso;
     private $mCategoria;
+    private $mCursoBusqueda;
 
 
-    public function __construct($dir, $model, $modelNivel, $modelVideo, $modelRecurso, $modelCategoria, $carpetaAssets)
+    public function __construct($dir, $model, $modelCursoBusqueda, $modelNivel, $modelVideo, $modelRecurso, $modelCategoria, $carpetaAssets)
     {
         $this->dbDir = $dir;
         $this->mNivel = $modelNivel;
         $this->mVideo = $modelVideo;
         $this->mRecurso = $modelRecurso;
         $this->mCategoria = $modelCategoria;
+        $this->mCursoBusqueda = $modelCursoBusqueda;
+
         require_once $modelNivel;
         require_once $modelVideo;
         require_once $modelRecurso;
         require_once $modelCategoria;
+        require_once $modelCursoBusqueda;
         $this->assets = $carpetaAssets;
         $this->videos = new VideoController($this->dbDir, "$modelVideo");
         $this->recursos = new RecursoController($this->dbDir, "$modelRecurso");
+        $this->categorias = new CategoriaController($this->dbDir, "$modelCategoria");
         require_once "$model";
         require_once "$this->dbDir";
         $this->conectar = new Conectar();
@@ -86,19 +91,229 @@ class CursoController
         return true;
     }
 
-    public function getCurso()
+    public function getCurso($idCurso)
     {
+        $cursoPresentacion = new CursoPresentacion(null);
+        $nivelesCurso = array();
+        $commentsCurso = array();
+        $catsCurso = array();
+
+        $sql = "call getCursoById($idCurso)";
+
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $cursoPresentacion->IdCurso = json_decode($row['IdCurso']);
+            $cursoPresentacion->TituloCurso = $row['TituloCurso'];
+            $cursoPresentacion->DescrCurso = $row['DescrCurso'];
+            $cursoPresentacion->PrecioCompleto = $row['PrecioCompleto'];
+            $cursoPresentacion->ImagenCurso = $row['ImagenCurso'];
+            $cursoPresentacion->IdMaestro = json_decode($row['IdMaestro']);
+            $cursoPresentacion->Nombre = $row['Nombre'];
+            $cursoPresentacion->APaterno = $row['APaterno'];
+            $cursoPresentacion->AMaterno = $row['AMaterno'];
+            $cursoPresentacion->ImagenMaestro = $row['ImagenMaestro'];
+            $cursoPresentacion->Likes = json_decode($row['Likes']);
+            $this->db->close();
+            $this->db = $this->conectar->conexion();
+            $sqlNiveles = "call getNivelesCurso($idCurso)";
+            $queryNiveles = $this->db->query($sqlNiveles);
+            if ($queryNiveles != null) {
+
+                while ($rowNiveles = $queryNiveles->fetch_assoc()) {
+                    $auxNiveles = new Nivel(null);
+                    $auxNiveles->IdNivel = json_decode($rowNiveles['IdNivel']);
+                    $auxNiveles->Nombre = $rowNiveles['Nombre'];
+                    $auxNiveles->Costo = json_decode($rowNiveles['Costo']);
+                    $auxNiveles->CursoPadre = json_decode($rowNiveles['CursoPadre']);
+
+                    array_push($nivelesCurso, $auxNiveles);
+                }
+            }
+
+            $this->db->close();
+            $this->db = $this->conectar->conexion();
+
+            $sqlComments = "call getComentariosCurso($idCurso)";
+            $queryComments = $this->db->query($sqlComments);
+
+            if ($queryComments != null) {
+                while ($rowComments = $queryComments->fetch_assoc()) {
+                    $auxComment = new Comentario(null);
+                    $auxComment->IdComentario = json_decode($rowComments['IdComentario']);
+                    $auxComment->CursoComentado = json_decode($rowComments['CursoComentado']);
+                    $auxComment->Contenido = $rowComments['Contenido'];
+                    $auxComment->Fecha = $rowComments['Fecha'];
+
+                    array_push($commentsCurso, $auxComment);
+                }
+            }
+
+            $cursoPresentacion->NivelesCurso = $nivelesCurso;
+            $cursoPresentacion->Comentarios = $commentsCurso;
+
+            $this->db->close();
+            $this->db = $this->conectar->conexion();
+
+            $sqlCats = "call getCategoriasCurso($idCurso)";
+            $queryCats = $this->db->query($sqlCats);
+
+            if ($queryCats != null) {
+                while ($rowCats = $queryCats->fetch_assoc()) {
+                    $auxCat = new CategoriaCurso(null);
+                    $auxCat->IdCatXCurso = json_decode($rowCats['IdCatXCurso']);
+                    $auxCat->CategoriaAsign = json_decode($rowCats['CategoriaAsign']);
+                    $auxCat->CursoAsign = json_decode($rowCats['CursoAsign']);
+                    $auxCat->Descripcion = $rowCats['Descripcion'];
+                    $auxCat->CreadoPor = json_decode($rowCats['CreadoPor']);
+                    $auxCat->FechaCreacion = $rowCats['FechaCreacion'];
+
+                    array_push($catsCurso, $auxCat);
+                }
+            }
+
+            $cursoPresentacion->Categoria = $catsCurso;
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $cursoPresentacion;
     }
 
     public function updateCurso()
     {
     }
 
-    public function getCursoByCategoria()
+    public function getCursoByCategoria($pIdCat)
     {
+        $cursosArray = array();
+
+        $sql = "call getCursoByCategoria($pIdCat)";
+        $query = $this->db->query($sql);
+
+
+        if ($query != null) {
+            while ($row = $query->fetch_assoc()) {
+                $auxCurso = new CursoBusqueda(null);
+                $auxCurso->IdCurso = json_decode($row['IdCurso']);
+                $auxCurso->TituloCurso = $row['TituloCurso'];
+                $auxCurso->DescrCurso = $row['DescrCurso'];
+                $auxCurso->PrecioCompleto = json_decode($row['PrecioCompleto']);
+                $auxCurso->ImagenCurso = $row['ImagenCurso'];
+                $auxCurso->Nombre = $row['Nombre'];
+                $auxCurso->APaterno = $row['APaterno'];
+                $auxCurso->AMaterno = $row['AMaterno'];
+                $auxCurso->CategoriaAsign = json_decode($row['CategoriaAsign']);
+                $auxCurso->Likes = json_decode($row['Likes']);
+
+                array_push($cursosArray, $auxCurso);
+            }
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $cursosArray;
     }
 
-    public function getCursoByName()
+    public function getCursoByTexto($pTexto)
     {
+        $cursosArray = array();
+
+        $sql = "call getCursoByText('$pTexto')";
+        $query = $this->db->query($sql);
+
+
+
+        if ($query != null) {
+            while ($row = $query->fetch_assoc()) {
+                $auxCurso = new CursoBusqueda(null);
+                $auxCurso->IdCurso = json_decode($row['IdCurso']);
+                $auxCurso->TituloCurso = $row['TituloCurso'];
+                $auxCurso->DescrCurso = $row['DescrCurso'];
+                $auxCurso->PrecioCompleto = json_decode($row['PrecioCompleto']);
+                $auxCurso->ImagenCurso = $row['ImagenCurso'];
+                $auxCurso->Nombre = $row['Nombre'];
+                $auxCurso->APaterno = $row['APaterno'];
+                $auxCurso->AMaterno = $row['AMaterno'];
+                $auxCurso->CategoriaAsign = json_decode($row['CategoriaAsign']);
+                $auxCurso->Likes = json_decode($row['Likes']);
+
+                array_push($cursosArray, $auxCurso);
+            }
+        } else {
+            return json_decode($this->db->error);
+        }
+
+
+        return $cursosArray;
+    }
+
+
+    public function getTop3Vendidos()
+    {
+        $cursos = array();
+
+        $sql = "call getTop3Vendidos()";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $auxCurso = new CursoInicio(null);
+            $auxCurso->IdCurso = json_decode($row['IdCurso']);
+            $auxCurso->TituloCurso = $row['TituloCurso'];
+            $auxCurso->ImagenCurso = $row['ImagenCurso'];
+
+            array_push($cursos, $auxCurso);
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $cursos;
+    }
+
+
+    public function getTop3Calificados()
+    {
+        $cursos = array();
+
+        $sql = "call getTop3Calificados()";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $auxCurso = new CursoInicio(null);
+            $auxCurso->IdCurso = json_decode($row['IdCurso']);
+            $auxCurso->TituloCurso = $row['TituloCurso'];
+            $auxCurso->ImagenCurso = $row['ImagenCurso'];
+
+            array_push($cursos, $auxCurso);
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $cursos;
+    }
+
+    public function getTop3Recientes()
+    {
+        $cursos = array();
+
+        $sql = "call getTop3Recientes()";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $auxCurso = new CursoInicio(null);
+            $auxCurso->IdCurso = json_decode($row['IdCurso']);
+            $auxCurso->TituloCurso = $row['TituloCurso'];
+            $auxCurso->ImagenCurso = $row['ImagenCurso'];
+
+            array_push($cursos, $auxCurso);
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $cursos;
     }
 }

@@ -74,7 +74,7 @@ class CategoriaController
         } else {
             return json_decode($this->db->error);
         }
-
+        $this->db->close();
         return json_decode($aux['IdCatCurso']);
     }
 }
