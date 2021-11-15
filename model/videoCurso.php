@@ -1,10 +1,10 @@
 <?php
-class Recurso
+class VideoCurso
 {
-    public $IdRecurso;
+    public $IdVideo;
     public $Nombre;
-    public $RutaArchiv;
-    public $VideoPadre;
+    public $NivelPadre;
+
 
     function __construct($data)
     {

@@ -39,4 +39,66 @@ class VideoController
 
         return $pVideo;
     }
+
+    public function getVideoById($pIdVideo)
+    {
+        $sql = "call getVideoById($pIdVideo)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $videoAux = new Video(null);
+            $videoAux->IdVideo = json_decode($row['IdVideo']);
+            $videoAux->Nombre = $row['Nombre'];
+            $videoAux->Descripcion = $row['Descripcion'];
+            $videoAux->RutaVideo = $row['RutaVideo'];
+            $videoAux->CursoPadre = json_decode($row['CursoPadre']);
+            $videoAux->NivelPadre = json_decode($row['NivelPadre']);
+        } else {
+            return json_decode($this->db->error);
+        }
+
+
+        return $videoAux;
+    }
+
+    public function getProximoVideo($pVideoActual)
+    {
+        $sql = "call getProxVideo($pVideoActual)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $videoProx = new VideoProximo(null);
+            $videoProx->IdVideo = json_decode($row['IdVideo']);
+            $videoProx->Nombre = $row['Nombre'];
+            $videoProx->ImagenCurso = $row['ImagenCurso'];
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $videoProx;
+    }
+
+    public function getVideosCurso($pIdCurso)
+    {
+        $videos = array();
+        $sql = "call getVideosCurso($pIdCurso)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            while ($row = $query->fetch_assoc()) {
+                $auxVideo = new VideoCurso(null);
+                $auxVideo->IdVideo = json_decode($row['IdVideo']);
+                $auxVideo->Nombre = $row['IdVideo'];
+                $auxVideo->NivelPadre = json_decode($row['NivelPadre']);
+
+                array_push($videos, $auxVideo);
+            }
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $videos;
+    }
 }

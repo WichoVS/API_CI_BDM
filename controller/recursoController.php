@@ -38,4 +38,26 @@ class RecursoController
         $pRecurso->IdRecurso = json_decode($row['IdRecurso']);
         return $pRecurso;
     }
+
+    public function getRecursosByVideo($pIdVideo)
+    {
+        $recursos = array();
+        $sql = "call getRecursosByVideo($pIdVideo)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            while ($row = $query->fetch_assoc()) {
+                $auxRecurso = new Recurso(null);
+                $auxRecurso->IdRecurso = json_decode($row['IdRecurso']);
+                $auxRecurso->Nombre = json_decode($row['Nombre']);
+                $auxRecurso->RutaArchiv = json_decode($row['RutaArchivo']);
+                $auxRecurso->VideoPadre = json_decode($row['VideoPadre']);
+
+                array_push($recursos, $auxRecurso);
+            }
+        } else {
+            return json_decode($this->db->error);
+        }
+        return $recursos;
+    }
 }
