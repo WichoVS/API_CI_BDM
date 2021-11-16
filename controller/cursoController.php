@@ -336,4 +336,30 @@ class CursoController
 
         return $curso;
     }
+
+    public function getCursosCreados($pIdUsuario)
+    {
+        $cursos = array();
+
+        $sql = "call getCursosCreados($pIdUsuario)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $aux = new CursoCreado(null);
+            $aux->IdCurso = json_decode($row['IdCurso']);
+            $aux->TituloCurso = $row['TituloCurso'];
+            $aux->DescrCurso = $row['DescrCurso'];
+            $aux->ImagenCurso = $row['ImagenCurso'];
+            $aux->AlumnosInscritos = json_decode($row['AlumnosInscritos']);
+            $aux->Promedio = json_decode($row['Promedio']);
+            $aux->IngresosTotales = json_decode($row['IngresosTotales']);
+
+            array_push($cursos, $aux);
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $cursos;
+    }
 }
