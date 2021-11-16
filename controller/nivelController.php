@@ -29,4 +29,24 @@ class NivelController
         $pNivel->IdNivel = json_decode($row['IdNivel']);
         return $pNivel;
     }
+
+    public function getNivelToPago($pIdNivel)
+    {
+
+        $nivel = new NivelToPago(null);
+
+        $sql = "call getNivelToPago($pIdNivel)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $nivel->IdNivel = json_decode($row['IdNivel']);
+            $nivel->Nombre = $row['Nombre'];
+            $nivel->Costo = json_decode($row['Costo']);
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $nivel;
+    }
 }

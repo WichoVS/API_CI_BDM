@@ -43,7 +43,9 @@ class UsuarioController
             return json_decode($this->db->error);
         }
         $idNo = json_decode($id['IdUsuario']);
+
         $userR->idUsuario = $idNo;
+        $userR->escuela = json_decode($id['Escuela']);
 
         return $userR;
     }

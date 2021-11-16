@@ -316,4 +316,24 @@ class CursoController
 
         return $cursos;
     }
+
+    public function getCursoToPago($pIdCurso)
+    {
+
+        $curso = new CursoToPago(null);
+
+        $sql = "call getCursoToPago($pIdCurso)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $curso->IdCurso = json_decode($row['IdCurso']);
+            $curso->TituloCurso = $row['TituloCurso'];
+            $curso->PrecioCompleto = json_decode($row['PrecioCompleto']);
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $curso;
+    }
 }
