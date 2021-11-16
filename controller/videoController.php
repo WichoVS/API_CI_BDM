@@ -90,9 +90,9 @@ class VideoController
             while ($row = $query->fetch_assoc()) {
                 $auxVideo = new VideoCurso(null);
                 $auxVideo->IdVideo = json_decode($row['IdVideo']);
-                $auxVideo->Nombre = $row['IdVideo'];
+                $auxVideo->Nombre = $row['Nombre'];
                 $auxVideo->NivelPadre = json_decode($row['NivelPadre']);
-
+                $auxVideo->Nivel = $row['Nivel'];
                 array_push($videos, $auxVideo);
             }
         } else {

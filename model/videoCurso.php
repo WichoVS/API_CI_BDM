@@ -4,6 +4,7 @@ class VideoCurso
     public $IdVideo;
     public $Nombre;
     public $NivelPadre;
+    public $Nivel;
 
 
     function __construct($data)
