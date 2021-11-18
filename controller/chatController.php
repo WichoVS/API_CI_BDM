@@ -69,7 +69,7 @@ class ChatController
                 $aC = new UsuarioChat(null);
                 $aC->IdChat = json_decode($rowC['IdChat']);
                 $aC->IdEmisor = json_decode($rowC['IdEmisor']);
-                $aC->IdReceptor = json_decode($rowC['IdReceptro']);
+                $aC->IdReceptor = json_decode($rowC['IdReceptor']);
                 $aC->Nombre = $rowC['Nombre'];
                 $aC->APaterno = $rowC['APaterno'];
                 $aC->AMaterno = $rowC['AMaterno'];

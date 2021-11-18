@@ -54,17 +54,22 @@ class UsuarioController
     public function getUsuario($pId)
     {
         $userR = new Usuario();
-        $sql = 'call getUsuarioData(\'' . $pId . '\')';
+        $sql = "call getUsuarioData( $pId)";
 
         $query = $this->db->query($sql);
         if ($query != null) {
             $auxUser = $query->fetch_assoc();
+            $userR->idUsuario = json_decode($auxUser['IdUsuario']);
+            $userR->nombre = $auxUser['Nombre'];
+            $userR->aPaterno = $auxUser['APaterno'];
+            $userR->aMaterno = $auxUser['AMaterno'];
+            $userR->correo = $auxUser['Correo'];
+            $userR->foto = $auxUser['Foto'];
+            $userR->escuela = json_decode($auxUser['Escuela']);
         } else {
-            return json_decode($this->db->error);
+            echo json_decode($this->db->error);
+            return null;
         }
-
-        //$idNo = json_decode($id['IdUsuario']);
-        $userR = $auxUser;
 
         return $userR;
     }
