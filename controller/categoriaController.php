@@ -12,16 +12,14 @@ class CategoriaController
         $this->db = $this->conectar->conexion();
     }
 
-    public function registrarCategoria($pCategoria)
+    public function registrarCategoria($pDescripcion)
     {
-        //$categoria = new Categoria(null);
-        $sql = "call registrarCategoria($pCategoria->Descripcion)";
+        $sql = "call registrarCategoria('$pDescripcion')";
         $query = $this->db->query($sql);
+
         if ($query != null) {
             return true;
         } else {
-
-            echo json_encode($this->db->error);
             return false;
         }
     }

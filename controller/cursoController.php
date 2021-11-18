@@ -281,13 +281,14 @@ class CursoController
         $query = $this->db->query($sql);
 
         if ($query != null) {
-            $row = $query->fetch_assoc();
-            $auxCurso = new CursoInicio(null);
-            $auxCurso->IdCurso = json_decode($row['IdCurso']);
-            $auxCurso->TituloCurso = $row['TituloCurso'];
-            $auxCurso->ImagenCurso = $row['ImagenCurso'];
+            while ($row = $query->fetch_assoc()) {
+                $auxCurso = new CursoInicio(null);
+                $auxCurso->IdCurso = json_decode($row['IdCurso']);
+                $auxCurso->TituloCurso = $row['TituloCurso'];
+                $auxCurso->ImagenCurso = $row['ImagenCurso'];
 
-            array_push($cursos, $auxCurso);
+                array_push($cursos, $auxCurso);
+            }
         } else {
             return json_decode($this->db->error);
         }
@@ -304,13 +305,15 @@ class CursoController
         $query = $this->db->query($sql);
 
         if ($query != null) {
-            $row = $query->fetch_assoc();
-            $auxCurso = new CursoInicio(null);
-            $auxCurso->IdCurso = json_decode($row['IdCurso']);
-            $auxCurso->TituloCurso = $row['TituloCurso'];
-            $auxCurso->ImagenCurso = $row['ImagenCurso'];
 
-            array_push($cursos, $auxCurso);
+            while ($row = $query->fetch_assoc()) {
+                $auxCurso = new CursoInicio(null);
+                $auxCurso->IdCurso = json_decode($row['IdCurso']);
+                $auxCurso->TituloCurso = $row['TituloCurso'];
+                $auxCurso->ImagenCurso = $row['ImagenCurso'];
+
+                array_push($cursos, $auxCurso);
+            }
         } else {
             return json_decode($this->db->error);
         }
@@ -326,13 +329,15 @@ class CursoController
         $query = $this->db->query($sql);
 
         if ($query != null) {
-            $row = $query->fetch_assoc();
-            $auxCurso = new CursoInicio(null);
-            $auxCurso->IdCurso = json_decode($row['IdCurso']);
-            $auxCurso->TituloCurso = $row['TituloCurso'];
-            $auxCurso->ImagenCurso = $row['ImagenCurso'];
+            while ($row = $query->fetch_assoc()) {
 
-            array_push($cursos, $auxCurso);
+                $auxCurso = new CursoInicio(null);
+                $auxCurso->IdCurso = json_decode($row['IdCurso']);
+                $auxCurso->TituloCurso = $row['TituloCurso'];
+                $auxCurso->ImagenCurso = $row['ImagenCurso'];
+
+                array_push($cursos, $auxCurso);
+            }
         } else {
             return json_decode($this->db->error);
         }
