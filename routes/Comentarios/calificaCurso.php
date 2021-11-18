@@ -1,0 +1,12 @@
+<?php
+require_once '../../controller/comentarioController.php';
+// Allow CORS
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
+header("Access-Control-Allow-Origin: *");
+header('content-type: application/json; charset=utf-8');
+$endPoint = new ComentarioController("../../config/db.php", "../../model/comentario.php");
+$json_data = file_get_contents('php://input');
+
+$data = json_decode($json_data);
+
+echo json_encode($endPoint->calificaCurso($data));

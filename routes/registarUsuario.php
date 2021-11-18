@@ -20,4 +20,4 @@ $genero = $data->genero;
 $foto = $data->foto;
 $escuela = $data->escuela;
 
-$endPoint->registrarUsuario($nombre, $aPaterno, $aMaterno, $correo, $contra, $fNacim, $genero, $foto, $escuela);
+echo json_encode($endPoint->registrarUsuario($nombre, $aPaterno, $aMaterno, $correo, $contra, $fNacim, $genero, $foto, $escuela));

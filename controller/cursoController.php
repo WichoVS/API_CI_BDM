@@ -140,11 +140,17 @@ class CursoController
 
             if ($queryComments != null) {
                 while ($rowComments = $queryComments->fetch_assoc()) {
-                    $auxComment = new Comentario(null);
+                    $auxComment = new ComentarioCurso(null);
                     $auxComment->IdComentario = json_decode($rowComments['IdComentario']);
                     $auxComment->CursoComentado = json_decode($rowComments['CursoComentado']);
+                    $auxComment->ComentadoPor = json_decode($rowComments['ComentadoPor']);
+                    $auxComment->Nombre = $rowComments['Nombre'];
+                    $auxComment->APaterno = $rowComments['APaterno'];
+                    $auxComment->AMaterno = $rowComments['AMaterno'];
+                    $auxComment->ImagenUsuario = $rowComments['ImagenUsuario'];
                     $auxComment->Contenido = $rowComments['Contenido'];
                     $auxComment->Fecha = $rowComments['Fecha'];
+                    $auxComment->Calificacion = json_decode($rowComments['Calificacion']);
 
                     array_push($commentsCurso, $auxComment);
                 }
@@ -181,8 +187,25 @@ class CursoController
         return $cursoPresentacion;
     }
 
-    public function updateCurso()
+    public function updateCurso($pData)
     {
+        $curso = new CursoModificar($pData);
+        $nameAux = str_replace("'", "\'", $curso->TituloCurso);
+        $descrAux = str_replace("'", "\'", $curso->DescrCurso);
+        if ($curso->Disponible) {
+            $dis = 1;
+        } else {
+            $dis = 0;
+        }
+        $sql = "call UpdateCurso($curso->IdCurso, '$nameAux', '$descrAux', $dis, '$curso->ImagenCurso')";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            return true;
+        } else {
+            echo json_encode($this->db->error);
+            return false;
+        }
     }
 
     public function getCursoByCategoria($pIdCat)
@@ -361,5 +384,25 @@ class CursoController
         }
 
         return $cursos;
+    }
+
+    public function getCursoAModificar($pIdCurso)
+    {
+        $curso = new CursoModificar(null);
+        $sql = "call getCursoModificar($pIdCurso)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $curso->IdCurso = json_decode($row['IdCurso']);
+            $curso->TituloCurso = $row['TituloCurso'];
+            $curso->DescrCurso = $row['DescrCurso'];
+            $curso->Disponible =  json_decode($row['Disponible']);
+            $curso->ImagenCurso = $row['ImagenCurso'];
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $curso;
     }
 }

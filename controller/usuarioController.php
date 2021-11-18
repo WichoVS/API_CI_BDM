@@ -93,4 +93,27 @@ class UsuarioController
             return json_decode($this->db->error);
         }
     }
+
+    public function getUsuarios()
+    {
+        $usuarios = array();
+        $sql = "call getUsuarios()";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            while ($rowU = $query->fetch_assoc()) {
+                $auxU = new UsuarioChat(null);
+                $auxU->IdUsuario = json_decode($rowU['IdUsuario']);
+                $auxU->Nombre = $rowU['Nombre'];
+                $auxU->APaterno = $rowU['APaterno'];
+                $auxU->AMaterno = $rowU['AMaterno'];
+
+                array_push($usuarios, $auxU);
+            }
+        } else {
+            return json_decode($this->db->error);
+        }
+
+        return $usuarios;
+    }
 }

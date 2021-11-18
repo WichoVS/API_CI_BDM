@@ -12,7 +12,7 @@ require_once '../../model/curso.php';
 require_once "../../model/comentario.php";
 require_once "../../model/cursoPresentacion.php";
 require_once "../../model/categoriaCurso.php";
-require_once "../../model/comentarioCurso.php";
+require_once "../../model/cursoModificar.php";
 
 $endPoint = new CursoController('../../config/db.php', "../../model/curso.php", "../../model/cursoBusqueda.php", "../../model/nivel.php", "../../model/video.php", "../../model/recurso.php", "../../model/categoria.php", "../../assets");
 $json_data = file_get_contents('php://input');
@@ -20,4 +20,4 @@ $json_data = file_get_contents('php://input');
 $data = json_decode($json_data);
 $idCurso = $data->Curso;
 
-echo json_encode($endPoint->getCurso($idCurso));
+echo json_encode($endPoint->getCursoAModificar($idCurso));
