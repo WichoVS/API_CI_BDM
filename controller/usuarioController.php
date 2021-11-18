@@ -66,6 +66,7 @@ class UsuarioController
             $userR->correo = $auxUser['Correo'];
             $userR->foto = $auxUser['Foto'];
             $userR->escuela = json_decode($auxUser['Escuela']);
+            $userR->creadoEn = $auxUser['CreadoEn'];
         } else {
             echo json_decode($this->db->error);
             return null;

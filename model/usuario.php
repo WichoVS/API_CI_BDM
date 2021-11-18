@@ -12,5 +12,5 @@ class Usuario
     public $genero;
     public $foto;
     public $escuela;
-
+    public $creadoEn;
 }
