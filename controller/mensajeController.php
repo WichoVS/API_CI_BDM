@@ -19,7 +19,7 @@ class MensajeController
         $mensaje = new Mensaje($pData);
 
         $auxContent = str_replace("'", "\'", $mensaje->Contenido);
-        $sql = "call enviaMensaje($mensaje->IdChat,$mensaje->IdUsuarioRecibe, $mensaje->pIdUsuarioEnvia, '$auxContent')";
+        $sql = "call enviaMensaje($mensaje->IdChat,$mensaje->IdUsuarioRecibe, $mensaje->IdUsuarioEnvia, '$auxContent')";
         $query = $this->db->query($sql);
 
         if ($query != null) {
@@ -45,9 +45,9 @@ class MensajeController
                 $aM->IdUsuarioRecibe = json_decode($rowM['IdUsuarioRecibe']);
                 $aM->IdUsuarioEnvia = json_decode($rowM['IdUsuarioEnvia']);
                 $aM->FechaHora = $rowM['FechaHora'];
-                $aM->Contenido = $rowM['IdMensaje'];
+                $aM->Contenido = $rowM['Contenido'];
 
-                array_push($mensaje, $aM);
+                array_push($mensajes, $aM);
             }
         } else {
             echo json_decode($this->db->error);

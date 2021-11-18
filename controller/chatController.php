@@ -85,4 +85,24 @@ class ChatController
 
         return $chats;
     }
+
+    public function getChatData($pIdChat)
+    {
+        $cursoData = new ChatData(null);
+        $sql = "call getChatData($pIdChat)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+
+            $cursoData->IdChat = json_decode($row['IdChat']);
+            $cursoData->IdEmisor = json_decode($row['IdEmisor']);
+            $cursoData->IdReceptor = json_decode($row['IdReceptor']);
+        } else {
+            echo json_encode($this->db->error);
+            return false;
+        }
+
+        return $cursoData;
+    }
 }

@@ -1,20 +1,20 @@
 <?php
 
-class Categoria
+class ChatData
 {
-    public $IdCategoria;
-    public $Descripcion;
+    public $IdChat;
+    public $IdEmisor;
+    public $IdReceptor;
 
     function __construct($data)
     {
-        if ($data != null) {
+        if ($data != null)
             foreach ($data as $key => $value) {
                 if (property_exists(__CLASS__, $key)) {
                     $this->$key = $value;
                 }
             }
 
-            unset($value);
-        }
+        unset($value);
     }
 }
