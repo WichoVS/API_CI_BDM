@@ -14,13 +14,15 @@ class CategoriaController
 
     public function registrarCategoria($pDescripcion)
     {
-        $sql = "call registrarCategoria('$pDescripcion')";
-        $query = $this->db->query($sql);
+        if ($pDescripcion != "") {
+            $sql = "call registrarCategoria('$pDescripcion')";
+            $query = $this->db->query($sql);
 
-        if ($query != null) {
-            return true;
-        } else {
-            return false;
+            if ($query != null) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
