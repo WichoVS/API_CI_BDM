@@ -233,6 +233,7 @@ class CursoController
                 array_push($cursosArray, $auxCurso);
             }
         } else {
+
             return json_decode($this->db->error);
         }
 
@@ -265,6 +266,7 @@ class CursoController
                 array_push($cursosArray, $auxCurso);
             }
         } else {
+
             return json_decode($this->db->error);
         }
 
@@ -290,6 +292,7 @@ class CursoController
                 array_push($cursos, $auxCurso);
             }
         } else {
+
             return json_decode($this->db->error);
         }
 
@@ -315,6 +318,7 @@ class CursoController
                 array_push($cursos, $auxCurso);
             }
         } else {
+
             return json_decode($this->db->error);
         }
 
@@ -339,6 +343,7 @@ class CursoController
                 array_push($cursos, $auxCurso);
             }
         } else {
+
             return json_decode($this->db->error);
         }
 
@@ -347,7 +352,7 @@ class CursoController
 
     public function getCursoToPago($pIdCurso)
     {
-
+        $this->db = $this->conectar->conexion();
         $curso = new CursoToPago(null);
 
         $sql = "call getCursoToPago($pIdCurso)";
@@ -359,6 +364,7 @@ class CursoController
             $curso->TituloCurso = $row['TituloCurso'];
             $curso->PrecioCompleto = json_decode($row['PrecioCompleto']);
         } else {
+
             return json_decode($this->db->error);
         }
 
@@ -385,6 +391,7 @@ class CursoController
 
             array_push($cursos, $aux);
         } else {
+
             return json_decode($this->db->error);
         }
 
@@ -405,9 +412,82 @@ class CursoController
             $curso->Disponible =  json_decode($row['Disponible']);
             $curso->ImagenCurso = $row['ImagenCurso'];
         } else {
+
             return json_decode($this->db->error);
         }
 
         return $curso;
+    }
+
+    public function getVideoCurrentbyUser($pIdUsuario, $pIdCurso)
+    {
+        $videoToGo = new VideoToGo(null);
+
+        $sql = "call getVideoCurrentbyUser($pIdUsuario, $pIdCurso)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $videoToGo->IdUsuario = json_decode($row['IdUsuario']);
+            $videoToGo->UltimoVideo = json_decode($row['UltimoVideo']);
+            $videoToGo->Curso = json_decode($row['Curso']);
+        } else {
+            echo json_decode($this->db->error);
+
+            return false;
+        }
+
+        return $videoToGo;
+    }
+
+    public function generarDiploma($pIdUsuario, $pIdCurso)
+    {
+        $dip = new Diploma(null);
+
+        $sql = "call generarDiploma($pIdUsuario, $pIdCurso)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+            $dip->Nombre = $row['Nombre'];
+            $dip->APaterno = $row['APaterno'];
+            $dip->AMaterno = $row['AMaterno'];
+            $dip->TituloCurso = $row['TituloCurso'];
+            $dip->Firma = $row['Firma'];
+        } else {
+
+            return false;
+        }
+
+        return $dip;
+    }
+
+    public function sendComentario($pCurso, $pUsuario, $pContenido, $pCalif)
+    {
+        $sql = "call calificaCurso($pCurso, $pUsuario, $pContenido, $pCalif)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+    public function InscribeEnCurso($pCurso, $pUsuario, $pPrecioPagado, $pFormaPago)
+    {
+
+        $sql = "call InscribeCurso($pCurso, $pUsuario, $pPrecioPagado, '$pFormaPago')";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+
+            return true;
+        } else {
+
+            return false;
+        }
     }
 }

@@ -1,14 +1,9 @@
 <?php
-
-class CursoInscrito
+class VideoToGo
 {
-    public $IdCurso;
-    public $CursoInscrito;
-    public $TituloCurso;
-    public $DescrCurso;
-    public $ImagenCurso;
-    public $Progreso;
-    public $Calificacion;
+    public $IdUsuario;
+    public $UltimoVideo;
+    public $Curso;
 
 
     function __construct($data)

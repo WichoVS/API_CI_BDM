@@ -1,15 +1,12 @@
 <?php
 
-class CursoInscrito
+class Diploma
 {
-    public $IdCurso;
-    public $CursoInscrito;
+    public $Nombre;
+    public $APaterno;
+    public $AMaterno;
     public $TituloCurso;
-    public $DescrCurso;
-    public $ImagenCurso;
-    public $Progreso;
-    public $Calificacion;
-
+    public $Firma;
 
     function __construct($data)
     {

@@ -84,4 +84,26 @@ class CursosAlumnosController
 
         return $cursoAlumnos;
     }
+
+    public function usuarioInscritoCurso($pIdUser, $pIdCurso)
+    {
+        $sql = "call UsuarioInscritoCurso($pIdUser, $pIdCurso)";
+        $query = $this->db->query($sql);
+
+        if ($query != null) {
+            $row = $query->fetch_assoc();
+
+            if ($query->num_rows == 1) {
+                $this->db->close();
+                return true;
+            } else {
+                $this->db->close();
+                return false;
+            }
+        } else {
+            echo json_decode($this->db->error);
+            $this->db->close();
+            return false;
+        }
+    }
 }
