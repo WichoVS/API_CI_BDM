@@ -22,6 +22,7 @@ class CursosAlumnosController
         if ($query != null) {
             while ($row = $query->fetch_assoc()) {
                 $cursoAux = new CursoInscrito(null);
+                $cursoAux->IdCurso = json_decode($row['IdCurso']);
                 $cursoAux->CursoInscrito = json_decode($row['CursoInscrito']);
                 $cursoAux->TituloCurso = $row['TituloCurso'];
                 $cursoAux->DescrCurso = $row['DescrCurso'];
@@ -103,6 +104,21 @@ class CursosAlumnosController
         } else {
             echo json_decode($this->db->error);
             $this->db->close();
+            return false;
+        }
+    }
+
+    public function ActualizaProgreso($pData)
+    {
+
+        $sql = "call actualizaProgreso($pData->IdUsuario, $pData->IdCurso, $pData->IdVideo, $pData->IdNivel)";
+        $query = $this->db->query($sql);
+
+
+        if ($query != null) {
+            return true;
+        } else {
+            echo json_encode($this->db->error);
             return false;
         }
     }

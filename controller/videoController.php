@@ -73,6 +73,7 @@ class VideoController
             $videoProx->IdVideo = json_decode($row['IdVideo']);
             $videoProx->Nombre = $row['Nombre'];
             $videoProx->ImagenCurso = $row['ImagenCurso'];
+            $videoProx->NivelPadre = $row['NivelPadre'];
         } else {
             return json_decode($this->db->error);
         }

@@ -4,6 +4,7 @@ class VideoProximo
     public $IdVideo;
     public $Nombre;
     public $ImagenCurso;
+    public $NivelPadre;
 
 
     function __construct($data)
