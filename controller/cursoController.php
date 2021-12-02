@@ -445,7 +445,7 @@ class CursoController
     {
         $dip = new Diploma(null);
 
-        $sql = "call generarDiploma($pIdUsuario, $pIdCurso)";
+        $sql = "call generarDiploma($pIdCurso, $pIdUsuario)";
         $query = $this->db->query($sql);
 
         if ($query != null) {
